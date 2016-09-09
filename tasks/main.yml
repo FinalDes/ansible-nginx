@@ -1,0 +1,14 @@
+---
+# tasks file for nginx
+- name: add nginx key
+  apt_key: url=http://nginx.org/keys/nginx_signing.key state=present
+- name: add nginx repo
+  apt_repository: repo='deb http://nginx.org/packages/ubuntu/ xenial nginx' state=present filename='nginx' update_cache=yes
+- name: install packages
+  apt: name={{item}} state=present
+  with_items:
+    - nginx
+- name: start nginx
+  service: name=nginx state=started enabled=yes
+- name: check online
+  wait_for: port=80 delay=1
