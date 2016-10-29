@@ -1,7 +1,7 @@
 ---
 # tasks file for nginx
 - name: add nginx key
-  apt_key: url=http://nginx.org/keys/nginx_signing.key state=present
+  apt_key: url=http://nginx.org/keys/nginx_signing.key id=7BD9BF62 state=present
 - name: add nginx repo
   apt_repository:
     repo: 'deb http://nginx.org/packages/ubuntu/ xenial nginx'
@@ -12,7 +12,19 @@
   apt: name={{item}} state=present
   with_items:
     - nginx
-- name: start nginx
-  service: name=nginx state=started enabled=yes
 - name: check online
   wait_for: port=80 delay=1
+- name: create sites-available directory
+  file: path=/etc/nginx/sites-available state=directory mode=0700
+- name: create sites-enabled directory
+  file: path=/etc/nginx/sites-enabled state=directory mode=0700
+- name: add sites-enabled
+  lineinfile:
+    dest: /etc/nginx/nginx.conf
+    line: "    include /etc/nginx/sites-enabled/*;"
+    insertafter: "include"
+    state: present
+  notify:
+    - restart nginx
+- name: start nginx
+  service: name=nginx state=started enabled=yes
