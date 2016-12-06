@@ -25,7 +25,7 @@
     path: /etc/nginx/sites-enabled
     state: directory
     mode: 0700
-- name: add sites-enabled
+- name: add sites-enabled config folder
   lineinfile:
     dest: /etc/nginx/nginx.conf
     line: "    include /etc/nginx/sites-enabled/*;"
