@@ -19,12 +19,12 @@
   file:
     path: /etc/nginx/sites-available
     state: directory
-    mode: 0700
+    mode: 0755
 - name: create sites-enabled directory
   file:
     path: /etc/nginx/sites-enabled
     state: directory
-    mode: 0700
+    mode: 0755
 - name: add sites-enabled config folder
   lineinfile:
     dest: /etc/nginx/nginx.conf
