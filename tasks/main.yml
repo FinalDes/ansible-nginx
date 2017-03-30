@@ -35,6 +35,7 @@
   with_fileglob:
     - "{{ role_path }}/files/cache.conf"
     - "{{ role_path }}/files/gzip.conf"
+  notify: restart nginx
 - name: copy nginx.conf
   copy:
     src: "{{ role_path }}/files/nginx.conf"
@@ -42,8 +43,9 @@
     owner: root
     group: root
     mode: 0755
+  notify: restart nginx
 - name: start nginx
-  service:
+  systemd:
     name: nginx
     state: started
     enabled: yes
