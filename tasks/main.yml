@@ -25,13 +25,6 @@
     path: /etc/nginx/sites-enabled
     state: directory
     mode: 0755
-- name: copy nginx.conf
-  copy:
-    src: "{{ role_path }}/files/nginx.conf"
-    dest: /etc/nginx/nginx.conf
-    owner: root
-    group: root
-    mode: 0755
 - name: copy other config
   copy:
     src: "{{ item }}"
@@ -42,6 +35,13 @@
   with_fileglob:
     - "{{ role_path }}/files/cache.conf"
     - "{{ role_path }}/files/gzip.conf"
+- name: copy nginx.conf
+  copy:
+    src: "{{ role_path }}/files/nginx.conf"
+    dest: /etc/nginx/nginx.conf
+    owner: root
+    group: root
+    mode: 0755
 - name: start nginx
   service:
     name: nginx
