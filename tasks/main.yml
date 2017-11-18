@@ -7,10 +7,18 @@
     state: present
 - name: add nginx repo
   apt_repository:
-    repo: 'deb http://nginx.org/packages/ubuntu/ xenial nginx'
+    repo: 'deb http://nginx.org/packages/ubuntu/ {{ansible_distribution_release}} nginx'
     state: present
     filename: 'nginx'
     update_cache: yes
+  when: ansible_distribution=="Ubuntu"
+- name: add nginx repo
+  apt_repository:
+    repo: 'deb http://nginx.org/packages/debian/ {{ansible_distribution_release}} nginx'
+    state: present
+    filename: 'nginx'
+    update_cache: yes
+  when: ansible_distribution=="Debian"
 - name: install packages
   apt:
     name: nginx
