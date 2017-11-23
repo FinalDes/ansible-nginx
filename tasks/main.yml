@@ -46,7 +46,7 @@
   notify: restart nginx
 - name: copy mine-types
   copy:
-    src: "{{ role_path }}/files/mine.types"
+    src: "{{ role_path }}/files/mime.types"
     dest: /etc/nginx
     owner: root
     group: root
