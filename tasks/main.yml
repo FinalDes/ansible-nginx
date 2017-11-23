@@ -44,6 +44,13 @@
     - "{{ role_path }}/files/cache.conf"
     - "{{ role_path }}/files/gzip.conf"
   notify: restart nginx
+- name: copy mine-types
+  copy:
+    src: "{{ role_path }}/files/mine.types"
+    dest: /etc/nginx
+    owner: root
+    group: root
+    mode: 0755
 - name: copy nginx.conf
   copy:
     src: "{{ role_path }}/files/nginx.conf"
