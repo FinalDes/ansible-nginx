@@ -121,6 +121,8 @@ galaxy_info:
     - trusty
     - xenial
     - zesty
+    - bionic
+    - focal
   #- name: SLES
   #  versions:
   #  - all
@@ -145,6 +147,7 @@ galaxy_info:
     versions:
     - jessie
     - stretch
+    - buster
 
   galaxy_tags: []
     # List tags for your role here, one per line. A tag is

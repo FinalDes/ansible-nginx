@@ -7,14 +7,14 @@
     state: present
 - name: add nginx repo
   apt_repository:
-    repo: 'deb http://nginx.org/packages/ubuntu/ {{ansible_distribution_release}} nginx'
+    repo: 'deb http://nginx.org/packages/ubuntu/ {{ ansible_distribution_release }} nginx'
     state: present
     filename: 'nginx'
     update_cache: yes
   when: ansible_distribution=="Ubuntu"
 - name: add nginx repo
   apt_repository:
-    repo: 'deb http://nginx.org/packages/debian/ {{ansible_distribution_release}} nginx'
+    repo: 'deb http://nginx.org/packages/debian/ {{ ansible_distribution_release }} nginx'
     state: present
     filename: 'nginx'
     update_cache: yes
@@ -39,25 +39,25 @@
     dest: /etc/nginx/conf.d/
     owner: root
     group: root
-    mode: 0755
+    mode: '0755'
   with_fileglob:
     - "{{ role_path }}/files/cache.conf"
     - "{{ role_path }}/files/gzip.conf"
   notify: restart nginx
-- name: copy mine-types
+- name: copy mime-types
   copy:
     src: "{{ role_path }}/files/mime.types"
     dest: /etc/nginx
     owner: root
     group: root
-    mode: 0755
+    mode: '0755'
 - name: copy nginx.conf
   copy:
     src: "{{ role_path }}/files/nginx.conf"
     dest: /etc/nginx/nginx.conf
     owner: root
     group: root
-    mode: 0755
+    mode: '0755'
   notify: restart nginx
 - name: start nginx
   systemd:
