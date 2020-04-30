@@ -145,9 +145,10 @@ galaxy_info:
   #  - any
   - name: Debian
     versions:
-    - jessie
-    - stretch
     - buster
+    - stretch
+    - jessie
+    - wheezy
 
   galaxy_tags: []
     # List tags for your role here, one per line. A tag is
