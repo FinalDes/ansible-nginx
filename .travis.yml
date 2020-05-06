@@ -10,7 +10,7 @@ addons:
 
 install:
   # Install ansible
-  - pip install ansible
+  - pip install ansible molecule[docker]
 
   # Check ansible version
   - ansible --version
