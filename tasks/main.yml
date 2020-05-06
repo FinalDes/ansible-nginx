@@ -1,5 +1,19 @@
 ---
 # tasks file for nginx
+- name: add pre install repo
+  apt:
+    name: "{{packages}}"
+    state: present
+    update_cache: true
+  vars:
+    packages:
+    - gnupg2
+    - ca-certificates
+    # - lsb-release
+    # - apt-transport-https
+    # - ca-certificates
+    # - gnupg-agent
+    # - software-properties-common
 - name: add nginx key
   apt_key:
     url: http://nginx.org/keys/nginx_signing.key
