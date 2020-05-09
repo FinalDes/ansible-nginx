@@ -12,7 +12,7 @@ install:
   # Install ansible
   # Check ansible version
   # - ansible --version
-
+  - pip3 install -r requirements.txt
   # Create ansible.cfg with correct roles_path
   - printf '[defaults]\nroles_path=../' >ansible.cfg
 
