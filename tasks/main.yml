@@ -19,20 +19,40 @@
     url: http://nginx.org/keys/nginx_signing.key
     id: 7BD9BF62
     state: present
-- name: add nginx repo
-  apt_repository:
-    repo: 'deb http://nginx.org/packages/ubuntu/ {{ ansible_distribution_release }} nginx'
-    state: present
-    filename: 'nginx'
-    update_cache: yes
-  when: ansible_distribution=="Ubuntu"
-- name: add nginx repo
-  apt_repository:
-    repo: 'deb http://nginx.org/packages/debian/ {{ ansible_distribution_release }} nginx'
-    state: present
-    filename: 'nginx'
-    update_cache: yes
-  when: ansible_distribution=="Debian"
+- name: add nginx stable repo
+  block:
+  - name: add nginx ubuntu stable repo
+    apt_repository:
+      repo: 'deb http://nginx.org/packages/ubuntu/ {{ ansible_distribution_release }} nginx'
+      state: present
+      filename: 'nginx'
+      update_cache: yes
+    when: ansible_distribution=="Ubuntu"
+  - name: add nginx debian stable repo
+    apt_repository:
+      repo: 'deb http://nginx.org/packages/debian/ {{ ansible_distribution_release }} nginx'
+      state: present
+      filename: 'nginx'
+      update_cache: yes
+    when: ansible_distribution=="Debian"
+  when: stable
+- name: add nginx mainline repo
+  block:
+  - name: add nginx ubuntu mainline repo
+    apt_repository:
+      repo: 'deb http://nginx.org/packages/mainline/ubuntu/ {{ ansible_distribution_release }} nginx'
+      state: present
+      filename: 'nginx'
+      update_cache: yes
+    when: ansible_distribution=="Ubuntu"
+  - name: add nginx debian mainline repo
+    apt_repository:
+      repo: 'deb http://nginx.org/packages/mainline/debian/ {{ ansible_distribution_release }} nginx'
+      state: present
+      filename: 'nginx'
+      update_cache: yes
+    when: ansible_distribution=="Debian"
+  when: stable==false
 - name: install packages
   apt:
     name: nginx

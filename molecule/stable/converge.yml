@@ -1,0 +1,13 @@
+---
+- name: Converge
+  hosts: all
+  vars:
+    ansible_user: ansible
+  roles:
+    - name: "ansible-nginx"
+      become: true
+      stable: true
+  # tasks:
+  #   - name: "Include ansible-nginx"
+  #     include_role:
+  #       name: "ansible-nginx"

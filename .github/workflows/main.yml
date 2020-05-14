@@ -18,6 +18,9 @@ jobs:
           - ubuntu-18.04
         python-version:
           - "3.6"
+        version:
+          - stable
+          - mainline
     steps:
       - uses: actions/checkout@v2.1.0
         # with:
@@ -43,6 +46,6 @@ jobs:
       - name: ansible syntax-check
         run: ansible-playbook tests/test.yml -i tests/inventory --syntax-check
       - name: Run nginx setup test
-        run: molecule test
+        run: molecule test --scenario-name ${{matrix.version}}
       # - name: Run docker ${{matrix.version}} test
       #   run: molecule test --scenario-name ${{matrix.version}}
