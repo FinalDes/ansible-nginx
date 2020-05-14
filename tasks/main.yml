@@ -52,7 +52,7 @@
       filename: 'nginx'
       update_cache: yes
     when: ansible_distribution=="Debian"
-  when: stable==false
+  when: not stable
 - name: install packages
   apt:
     name: nginx
