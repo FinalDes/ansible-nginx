@@ -21,7 +21,7 @@ script:
   - yamllint .
   - ansible-lint
   - ansible-playbook tests/test.yml -i tests/inventory --syntax-check
-  - molecule test
+  - molecule test --scenario-name stable
 
 notifications:
   webhooks: https://galaxy.ansible.com/api/v1/notifications/
