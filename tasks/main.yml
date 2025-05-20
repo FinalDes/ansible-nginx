@@ -1,104 +1,104 @@
 ---
 # tasks file for nginx
-- name: add pre install repo
-  apt:
+- name: Add pre install repo
+  ansible.builtin.apt:
     name: "{{ packages }}"
     state: present
     update_cache: true
   vars:
     packages:
-    - gnupg2
-    - ca-certificates
+      - gnupg2
+      - ca-certificates
     # - lsb-release
     # - apt-transport-https
     # - ca-certificates
     # - gnupg-agent
     # - software-properties-common
-- name: add nginx key
-  apt_key:
+- name: Add nginx key
+  ansible.builtin.apt_key:
     url: http://nginx.org/keys/nginx_signing.key
     id: 7BD9BF62
     state: present
-- name: add nginx stable repo
-  block:
-  - name: add nginx ubuntu stable repo
-    apt_repository:
-      repo: 'deb http://nginx.org/packages/ubuntu/ {{ ansible_distribution_release }} nginx'
-      state: present
-      filename: 'nginx'
-      update_cache: yes
-    when: ansible_distribution=="Ubuntu"
-  - name: add nginx debian stable repo
-    apt_repository:
-      repo: 'deb http://nginx.org/packages/debian/ {{ ansible_distribution_release }} nginx'
-      state: present
-      filename: 'nginx'
-      update_cache: yes
-    when: ansible_distribution=="Debian"
+- name: Add nginx stable repo
   when: stable
-- name: add nginx mainline repo
   block:
-  - name: add nginx ubuntu mainline repo
-    apt_repository:
-      repo: 'deb http://nginx.org/packages/mainline/ubuntu/ {{ ansible_distribution_release }} nginx'
-      state: present
-      filename: 'nginx'
-      update_cache: yes
-    when: ansible_distribution=="Ubuntu"
-  - name: add nginx debian mainline repo
-    apt_repository:
-      repo: 'deb http://nginx.org/packages/mainline/debian/ {{ ansible_distribution_release }} nginx'
-      state: present
-      filename: 'nginx'
-      update_cache: yes
-    when: ansible_distribution=="Debian"
+    - name: Add nginx ubuntu stable repo
+      ansible.builtin.apt_repository:
+        repo: "deb http://nginx.org/packages/ubuntu/ {{ ansible_distribution_release }} nginx"
+        state: present
+        filename: "nginx"
+        update_cache: yes
+      when: ansible_distribution=="Ubuntu"
+    - name: Add nginx debian stable repo
+      ansible.builtin.apt_repository:
+        repo: "deb http://nginx.org/packages/debian/ {{ ansible_distribution_release }} nginx"
+        state: present
+        filename: "nginx"
+        update_cache: yes
+      when: ansible_distribution=="Debian"
+- name: Add nginx mainline repo
   when: not stable
-- name: install packages
-  apt:
+  block:
+    - name: Add nginx ubuntu mainline repo
+      ansible.builtin.apt_repository:
+        repo: "deb http://nginx.org/packages/mainline/ubuntu/ {{ ansible_distribution_release }} nginx"
+        state: present
+        filename: "nginx"
+        update_cache: yes
+      when: ansible_distribution=="Ubuntu"
+    - name: Add nginx debian mainline repo
+      ansible.builtin.apt_repository:
+        repo: "deb http://nginx.org/packages/mainline/debian/ {{ ansible_distribution_release }} nginx"
+        state: present
+        filename: "nginx"
+        update_cache: yes
+      when: ansible_distribution=="Debian"
+- name: Install packages
+  ansible.builtin.apt:
     name: nginx
     state: present
-- name: create sites-available directory
-  file:
+- name: Create sites-available directory
+  ansible.builtin.file:
     path: /etc/nginx/sites-available
     state: directory
     mode: 0755
-- name: create sites-enabled directory
-  file:
+- name: Create sites-enabled directory
+  ansible.builtin.file:
     path: /etc/nginx/sites-enabled
     state: directory
     mode: 0755
-- name: copy other config
-  copy:
+- name: Copy other config
+  ansible.builtin.copy:
     src: "{{ item }}"
     dest: /etc/nginx/conf.d/
     owner: root
     group: root
-    mode: '0755'
+    mode: "0755"
   with_fileglob:
     - "{{ role_path }}/files/cache.conf"
     - "{{ role_path }}/files/gzip.conf"
-  notify: restart nginx
-- name: copy mime-types
-  copy:
+  notify: Restart nginx
+- name: Copy mime-types
+  ansible.builtin.copy:
     src: "{{ role_path }}/files/mime.types"
     dest: /etc/nginx
     owner: root
     group: root
-    mode: '0755'
-- name: copy nginx.conf
-  copy:
+    mode: "0755"
+- name: Copy nginx.conf
+  ansible.builtin.copy:
     src: "{{ role_path }}/files/nginx.conf"
     dest: /etc/nginx/nginx.conf
     owner: root
     group: root
-    mode: '0755'
-  notify: restart nginx
-- name: start nginx
-  systemd:
+    mode: "0755"
+  notify: Restart nginx
+- name: Start nginx
+  ansible.builtin.systemd:
     name: nginx
     state: started
     enabled: yes
-- name: check online
-  wait_for:
+- name: Check online
+  ansible.builtin.wait_for:
     port: 80
     delay: 1

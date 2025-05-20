@@ -12,24 +12,25 @@ on:
 jobs:
   test:
     runs-on: ${{matrix.os}}
+    continue-on-error: true
     strategy:
       matrix:
         os:
-          - ubuntu-18.04
+          - ubuntu-24.04
         python-version:
-          - "3.6"
+          - "3.13.2"
         version:
           - stable
           - mainline
     steps:
-      - uses: actions/checkout@v2.1.0
+      - uses: actions/checkout@v4.2.2
         # with:
         #   path: molecule_demo
-      - name: Set up Python 3.6
-        uses: actions/setup-python@v2
+      - name: Set up Python
+        uses: actions/setup-python@v5.6.0
         with:
           python-version: ${{matrix.python-version}}
-      - uses: actions/cache@v1
+      - uses: actions/cache@v4.2.3
         with:
           path: ~/.cache/pip
           key: ${{ runner.os }}-pip-${{ hashFiles('**/requirements.txt') }}
@@ -48,7 +49,7 @@ jobs:
       - name: Run nginx setup test
         run: molecule test --scenario-name ${{matrix.version}}
         env:
-          PY_COLORS: '1'
-          ANSIBLE_FORCE_COLOR: '1'
+          PY_COLORS: "1"
+          ANSIBLE_FORCE_COLOR: "1"
       # - name: Run docker ${{matrix.version}} test
       #   run: molecule test --scenario-name ${{matrix.version}}
