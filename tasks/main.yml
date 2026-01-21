@@ -23,35 +23,47 @@
   when: stable
   block:
     - name: Add nginx ubuntu stable repo
-      ansible.builtin.apt_repository:
-        repo: "deb http://nginx.org/packages/ubuntu/ {{ ansible_distribution_release }} nginx"
+      ansible.builtin.deb822_repository:
+        name: nginx
+        uris: http://nginx.org/packages/ubuntu/
+        suites: "{{ ansible_distribution_release }}"
+        components: [nginx]
+        architectures: [amd64]
+        signed_by: http://nginx.org/keys/nginx_signing.key
         state: present
-        filename: "nginx"
-        update_cache: yes
       when: ansible_distribution=="Ubuntu"
     - name: Add nginx debian stable repo
-      ansible.builtin.apt_repository:
-        repo: "deb http://nginx.org/packages/debian/ {{ ansible_distribution_release }} nginx"
+      ansible.builtin.deb822_repository:
+        name: nginx
+        uris: http://nginx.org/packages/debian/
+        suites: "{{ ansible_distribution_release }}"
+        components: [nginx]
+        architectures: [amd64]
+        signed_by: http://nginx.org/keys/nginx_signing.key
         state: present
-        filename: "nginx"
-        update_cache: yes
       when: ansible_distribution=="Debian"
 - name: Add nginx mainline repo
   when: not stable
   block:
     - name: Add nginx ubuntu mainline repo
-      ansible.builtin.apt_repository:
-        repo: "deb http://nginx.org/packages/mainline/ubuntu/ {{ ansible_distribution_release }} nginx"
+      ansible.builtin.deb822_repository:
+        name: nginx
+        uris: http://nginx.org/packages/mainline/ubuntu/
+        suites: "{{ ansible_distribution_release }}"
+        components: [nginx]
+        architectures: [amd64]
+        signed_by: http://nginx.org/keys/nginx_signing.key
         state: present
-        filename: "nginx"
-        update_cache: yes
       when: ansible_distribution=="Ubuntu"
     - name: Add nginx debian mainline repo
-      ansible.builtin.apt_repository:
-        repo: "deb http://nginx.org/packages/mainline/debian/ {{ ansible_distribution_release }} nginx"
+      ansible.builtin.deb822_repository:
+        name: nginx
+        uris: http://nginx.org/packages/mainline/debian/
+        suites: "{{ ansible_distribution_release }}"
+        components: [nginx]
+        architectures: [amd64]
+        signed_by: http://nginx.org/keys/nginx_signing.key
         state: present
-        filename: "nginx"
-        update_cache: yes
       when: ansible_distribution=="Debian"
 - name: Install packages
   ansible.builtin.apt:
